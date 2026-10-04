@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MedBot · The Living Encyclopedia</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;1,500&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a1013;--ink:#e8f1f0;--mute:#8aa1a3;--glass:rgba(255,255,255,.06);--line:rgba(255,255,255,.12);
+--a:#2dd4bf;--b:#ff7a85;--me:linear-gradient(135deg,#14b8a6,#0e7490);--mark:rgba(45,212,191,.25)}
+[data-theme=light]{--bg:#f6f1e8;--ink:#1d2a2d;--mute:#5d7074;--glass:rgba(255,255,255,.65);--line:rgba(0,0,0,.1);
+--a:#0f9c8a;--b:#e2566a;--mark:rgba(15,156,138,.2)}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--ink);height:100vh;overflow:hidden;transition:.4s}
+.blob{position:fixed;width:520px;height:520px;border-radius:50%;filter:blur(110px);opacity:.28;z-index:0;animation:drift 18s ease-in-out infinite alternate}
+.b1{background:var(--a);top:-160px;left:-120px}.b2{background:var(--b);bottom:-200px;right:-120px;animation-delay:-9s}
+@keyframes drift{to{transform:translate(120px,80px) scale(1.2)}}
+.layout{position:relative;z-index:1;display:grid;grid-template-columns:270px 1fr;height:100vh}
+aside{background:var(--glass);backdrop-filter:blur(18px);border-right:1px solid var(--line);padding:22px 16px;display:flex;flex-direction:column;gap:14px}
+.logo{font-family:'Fraunces',serif;font-size:1.7rem;display:flex;align-items:center;gap:10px}
+.logo i{font-style:normal;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--a),var(--b));font-size:1.2rem;animation:beat 1.6s infinite}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.14)}30%{transform:scale(1)}45%{transform:scale(1.1)}}
+.side-btn{background:var(--glass);border:1px solid var(--line);color:var(--ink);padding:10px 14px;border-radius:12px;font:inherit;cursor:pointer;text-align:left;transition:.2s}
+.side-btn:hover{border-color:var(--a);transform:translateX(3px)}
+aside h4{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-top:6px}
+#hist{display:flex;flex-direction:column;gap:6px;overflow-y:auto;flex:1}
+#hist button{font-size:.85rem;padding:8px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+main{display:flex;flex-direction:column;height:100vh;min-width:0}
+.ecg{height:46px;opacity:.8}.ecg svg{width:100%;height:100%}
+.ecg path{fill:none;stroke:var(--a);stroke-width:2;stroke-linecap:round;stroke-dasharray:500;animation:run 3.4s linear infinite;filter:drop-shadow(0 0 4px var(--a))}
+@keyframes run{from{stroke-dashoffset:500}to{stroke-dashoffset:-500}}
+#chat{flex:1;overflow-y:auto;padding:10px 7% 20px;display:flex;flex-direction:column;gap:16px;scroll-behavior:smooth}
+.hero{margin:auto;text-align:center;max-width:680px;animation:rise .8s ease}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.1}
+.hero h1 em{background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--mute);margin:14px 0 26px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:16px;padding:16px;text-align:left;cursor:pointer;color:var(--ink);font:inherit;transition:.25s}
+.card:hover{transform:translateY(-5px);border-color:var(--a);box-shadow:0 12px 30px -12px var(--a)}
+.card span{display:block;font-size:1.4rem;margin-bottom:6px}
+.msg{max-width:82%;animation:rise .35s ease;line-height:1.7}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.me{align-self:flex-end;background:var(--me);color:#fff;padding:12px 18px;border-radius:20px 20px 4px 20px}
+.bot{align-self:flex-start;background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--line);padding:16px 20px;border-radius:20px 20px 20px 4px}
+.tag{display:inline-block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--a);border:1px solid var(--a);border-radius:20px;padding:2px 10px;margin-bottom:10px}
+.bot p{margin-bottom:12px}.bot p.more{font-size:.92rem;color:var(--mute);border-left:3px solid var(--line);padding-left:12px}
+mark{background:var(--mark);color:inherit;border-radius:4px;padding:0 3px}
+.acts{display:flex;gap:8px;margin-top:6px}
+.acts button{background:none;border:1px solid var(--line);color:var(--mute);border-radius:20px;padding:4px 12px;font:inherit;font-size:.8rem;cursor:pointer}
+.acts button:hover{color:var(--ink);border-color:var(--a)}
+.dots span{display:inline-block;width:8px;height:8px;margin-right:5px;border-radius:50%;background:var(--a);animation:bl 1s infinite}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes bl{0%,100%{opacity:.2;transform:translateY(0)}50%{opacity:1;transform:translateY(-5px)}}
+.bar{padding:6px 7% 10px}
+form{display:flex;gap:8px;align-items:center;background:var(--glass);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:30px;padding:6px 6px 6px 20px;transition:.3s}
+form:focus-within{border-color:var(--a);box-shadow:0 0 0 4px var(--mark)}
+input{flex:1;background:none;border:0;outline:0;color:var(--ink);font:inherit;font-size:1rem;padding:10px 0}
+form button{border:0;cursor:pointer;border-radius:50%;width:44px;height:44px;font-size:1.1rem;color:#fff;background:linear-gradient(135deg,var(--a),var(--b))}
+form button#mic{background:var(--glass);color:var(--ink)}
+form button.on{animation:beat 1s infinite;background:var(--b)}
+.note{text-align:center;font-size:.72rem;color:var(--mute);margin-top:8px}
+@media(max-width:820px){.layout{grid-template-columns:1fr}aside{display:none}.msg{max-width:94%}}
+</style>
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div>
+<div class="layout">
+  <aside>
+    <div class="logo"><i>✚</i>MedBot</div>
+    <button class="side-btn" id="new">＋ New conversation</button>
+    <h4>Recent questions</h4>
+    <div id="hist"></div>
+    <button class="side-btn" id="clr">🗑 Clear history</button>
+    <button class="side-btn" id="theme">🌗 Switch theme</button>
+  </aside>
+  <main>
+    <div class="ecg"><svg viewBox="0 0 400 46" preserveAspectRatio="none"><path d="M0 24 H120 L130 24 L138 6 L148 42 L158 24 H230 L240 16 L250 24 H400"/></svg></div>
+    <div id="chat"></div>
+    <div class="bar">
+      <form id="form">
+        <input id="q" placeholder="Ask about any disease, symptom or treatment…" autocomplete="off">
+        <button type="button" id="mic" title="Speak">🎙</button>
+        <button title="Send">➤</button>
+      </form>
+      <div class="note">Answers are taken from The Gale Encyclopedia of Medicine · For learning only, not medical advice</div>
+    </div>
+  </main>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const chat = $('chat'), input = $('q');
+const STOP = 'what which who how why when where the and are was for with about from that this does can tell give explain symptoms'.split(' ');
+const IDEAS = [['🫁','What is asthma?'],['🩸','What causes anemia?'],['🦠','What is anthrax?'],['🦴','Explain arthritis'],['🧠','What is Alzheimer disease?'],['🧴','How is acne treated?']];
+let hist = [];
+try { hist = JSON.parse(localStorage.getItem('medbot_hist') || '[]'); } catch(e) {}
+
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const clean = s => s.replace(/GALE ENCYCLOPEDIA OF MEDICINE\s*\d*/gi,'').replace(/\s+/g,' ').trim();
+function mark(text, q) {
+  const words = q.toLowerCase().split(/[^a-z]+/).filter(w => w.length > 2 && !STOP.includes(w));
+  let out = esc(text);
+  if (words.length) out = out.replace(new RegExp('\\b(' + words.join('|') + ')\\w*', 'gi'), '<mark>$&</mark>');
+  return out;
+}
+
+function hero() {
+  chat.innerHTML = '<div class="hero"><h1>Ask the <em>encyclopedia.</em></h1>' +
+    '<p>Hundreds of pages of medical knowledge, one question away.</p><div class="cards">' +
+    IDEAS.map(i => `<button class="card" data-q="${i[1]}"><span>${i[0]}</span>${i[1]}</button>`).join('') + '</div></div>';
+  chat.querySelectorAll('.card').forEach(c => c.onclick = () => ask(c.dataset.q));
+}
+function drawHist() {
+  $('hist').innerHTML = '';
+  hist.slice(0, 12).forEach(h => {
+    const b = document.createElement('button');
+    b.className = 'side-btn'; b.textContent = h; b.onclick = () => ask(h);
+    $('hist').appendChild(b);
+  });
+}
+function add(html, cls) {
+  const d = document.createElement('div');
+  d.className = 'msg ' + cls; d.innerHTML = html;
+  chat.appendChild(d); chat.scrollTop = chat.scrollHeight;
+  return d;
+}
+
+async function ask(text) {
+  text = text.trim(); if (!text) return;
+  if (chat.querySelector('.hero')) chat.innerHTML = '';
+  input.value = '';
+  add(esc(text), 'me');
+  hist = [text, ...hist.filter(h => h !== text)].slice(0, 30);
+  try { localStorage.setItem('medbot_hist', JSON.stringify(hist)); } catch(e) {}
+  drawHist();
+  const box = add('<span class="dots"><span></span><span></span><span></span></span>', 'bot');
+  try {
+    const res = await fetch('/ask?q=' + encodeURIComponent(text));
+    const data = await res.json();
+    const ps = data.passages.map(clean).filter(p => p.length > 20);
+    if (!ps.length) { box.innerHTML = "I searched the encyclopedia but found nothing on that. Try other words, or a different topic."; return; }
+    box.innerHTML = '<span class="tag">From the Encyclopedia</span><p id="live"></p>';
+    const live = box.querySelector('#live'), words = ps[0].split(' ');
+    let i = 0;
+    const t = setInterval(() => {
+      i += 3; live.innerHTML = mark(words.slice(0, i).join(' '), text) + (i < words.length ? ' ▍' : '');
+      chat.scrollTop = chat.scrollHeight;
+      if (i >= words.length) {
+        clearInterval(t); live.removeAttribute('id');
+        ps.slice(1).forEach(p => { const m = document.createElement('p'); m.className = 'more'; m.innerHTML = mark(p, text); box.appendChild(m); });
+        const a = document.createElement('div'); a.className = 'acts';
+        a.innerHTML = '<button>📋 Copy</button><button>🔊 Read aloud</button>';
+        a.children[0].onclick = e => { navigator.clipboard.writeText(ps.join('\n\n')); e.target.textContent = '✓ Copied'; };
+        a.children[1].onclick = () => { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(ps[0])); };
+        box.appendChild(a); chat.scrollTop = chat.scrollHeight;
+      }
+    }, 28);
+  } catch (err) { box.innerHTML = "I can't reach the server. Is the black Java window still open?"; }
+}
+
+$('form').onsubmit = e => { e.preventDefault(); ask(input.value); };
+$('new').onclick = hero;
+$('clr').onclick = () => { hist = []; try { localStorage.removeItem('medbot_hist'); } catch(e) {} drawHist(); };
+$('theme').onclick = () => { const h = document.documentElement; h.dataset.theme = h.dataset.theme === 'dark' ? 'light' : 'dark'; };
+
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (!SR) $('mic').style.display = 'none';
+else $('mic').onclick = () => {
+  const r = new SR(); r.lang = 'en-US'; $('mic').classList.add('on');
+  r.onresult = e => ask(e.results[0][0].transcript);
+  r.onend = () => $('mic').classList.remove('on');
+  r.start();
+};
+
+hero(); drawHist();
+</script>
+</body>
+</html>
