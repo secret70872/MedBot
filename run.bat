@@ -4,7 +4,8 @@ cd /d "%~dp0"
 echo Compiling MedBot...
 javac Server.java
 if errorlevel 1 (
-  echo Compile failed. Check Java is installed and Server.java is in this folder.
+  echo.
+  echo Compile failed. Check that Java is installed and Server.java is in this folder.
   pause
   exit /b
 )

@@ -1,0 +1,9 @@
+# Copyrighted book text and PDFs: never publish these
+book.txt
+*.pdf
+
+# Compiled Java files
+*.class
+
+# Secrets (for future API keys)
+.env
